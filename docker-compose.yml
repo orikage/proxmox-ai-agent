@@ -1,0 +1,19 @@
+services:
+  ai-agent:
+    build: .
+    container_name: proxmox-ai-agent
+    network_mode: host
+    environment:
+      - PROXMOX_HOST=${PROXMOX_HOST}
+      - PROXMOX_PORT=${PROXMOX_PORT:-8006}
+      - PROXMOX_TOKEN_ID=${PROXMOX_TOKEN_ID}
+      - PROXMOX_TOKEN_SECRET=${PROXMOX_TOKEN_SECRET}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - workspace:/workspace
+    stdin_open: true
+    tty: true
+
+volumes:
+  workspace:

@@ -1,0 +1,20 @@
+#!/bin/bash
+# Proxmox API wrapper
+# Usage: pve-api <METHOD> <ENDPOINT> [DATA]
+
+METHOD="${1:-GET}"
+ENDPOINT="$2"
+DATA="$3"
+
+if [ -z "$ENDPOINT" ]; then
+  echo "Usage: pve-api <METHOD> <ENDPOINT> [JSON_DATA]"
+  echo "Example: pve-api GET /nodes"
+  exit 1
+fi
+
+curl -s -k \
+  -H "Authorization: PVEAPIToken=${PROXMOX_TOKEN_ID}=${PROXMOX_TOKEN_SECRET}" \
+  -H "Content-Type: application/json" \
+  -X "$METHOD" \
+  ${DATA:+-d "$DATA"} \
+  "https://${PROXMOX_HOST}:${PROXMOX_PORT}/api2/json${ENDPOINT}" | jq

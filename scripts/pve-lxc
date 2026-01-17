@@ -1,0 +1,5 @@
+#!/bin/bash
+# List all LXC containers
+# Usage: pve-lxc [node]
+NODE="${1:-$(pve-api GET /nodes | jq -r '.data[0].node')}"
+pve-api GET "/nodes/${NODE}/lxc"
