@@ -15,16 +15,32 @@ AI agents (ClaudeCode/Gemini CLI) for Proxmox VE management via REST API.
 
 Proxmox上に設置されたDockege環境で、このAIエージェントを実行および管理する手順です。
 
-1. **リポジトリの配置 (Stackの作成)**
-   Dockegeが管理するスタック用ディレクトリ（例: `/opt/stacks` や `/opt/dockege/stacks` など）に移動し、このリポジトリをクローンします。
-   ```bash
-   # Dockegeのスタックディレクトリへ移動 (環境に合わせてパスを変更してください)
-   cd /opt/stacks
+1. **Composeの作成 (Stackの作成)**
+   DockegeのWeb UIで「+ Compose」ボタンをクリックし、Stack名を `proxmox-ai-agent` とします。
+   右側のエディタに以下のCompose定義を貼り付けます。
    
-   # リポジトリをクローン
-   git clone https://github.com/YOUR_USERNAME/proxmox-ai-agent.git
+   ```yaml
+   services:
+     ai-agent:
+       image: ghcr.io/orikage/proxmox-ai-agent:latest
+       container_name: proxmox-ai-agent
+       network_mode: host
+       environment:
+         - PROXMOX_HOST=${PROXMOX_HOST}
+         - PROXMOX_PORT=${PROXMOX_PORT:-8006}
+         - PROXMOX_TOKEN_ID=${PROXMOX_TOKEN_ID}
+         - PROXMOX_TOKEN_SECRET=${PROXMOX_TOKEN_SECRET}
+         - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+         - GEMINI_API_KEY=${GEMINI_API_KEY}
+       volumes:
+         - workspace:/workspace
+       stdin_open: true
+       tty: true
+   
+   volumes:
+     workspace:
    ```
-   これでDockegeのUI上に `proxmox-ai-agent` というスタックが表示されます。
+   *注意*: `image` の `YOUR_USERNAME` は、このリポジトリの所有者名（GitHubユーザー名）に置き換えてください。
 
 2. **環境変数の設定**
    DockegeのWeb UIにアクセスし、`proxmox-ai-agent` スタックを選択して「Edit」をクリックします。
