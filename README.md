@@ -11,40 +11,49 @@ AI agents (ClaudeCode/Gemini CLI) for Proxmox VE management via REST API.
 - **AIエージェント用環境**: Dockerコンテナとして環境がパッケージ化されており、AIエージェントをすぐに起動してPVE操作を行わせることができます。
 - **拡張可能なツールセット**: 基本的なスクリプト (`pve-vms`, `pve-status` など) に加え、任意のAPIエンドポイントを叩ける `pve-api` ラッパーが含まれているため、バックアップ作成やVM作成など、複雑なタスクもAIに指示可能です。
 
-## インストールとセットアップ
+## Dockege (Proxmox上) へのインストール
 
-1. **リポジトリのクローン**
+Proxmox上に設置されたDockege環境で、このAIエージェントを実行および管理する手順です。
+
+1. **リポジトリの配置 (Stackの作成)**
+   Dockegeが管理するスタック用ディレクトリ（例: `/opt/stacks` や `/opt/dockege/stacks` など）に移動し、このリポジトリをクローンします。
    ```bash
+   # Dockegeのスタックディレクトリへ移動 (環境に合わせてパスを変更してください)
+   cd /opt/stacks
+   
+   # リポジトリをクローン
    git clone https://github.com/YOUR_USERNAME/proxmox-ai-agent.git
-   cd proxmox-ai-agent
    ```
+   これでDockegeのUI上に `proxmox-ai-agent` というスタックが表示されます。
 
 2. **環境変数の設定**
-   `.env.example` をコピーして `.env` ファイルを作成し、ご自身の環境に合わせて編集してください。
-   ```bash
-   cp .env.example .env
-   # .env ファイルを編集して Proxmox APIトークンと AI APIキーを設定
+   DockegeのWeb UIにアクセスし、`proxmox-ai-agent` スタックを選択して「Edit」をクリックします。
+   「Environment Variables (環境変数)」エリアに、`.env.example` を参考に必要な値を入力します。
+
+   ```env
+   # Proxmoxの設定
+   PROXMOX_HOST=192.168.1.100  # ProxmoxホストのIP
+   PROXMOX_PORT=8006
+   PROXMOX_TOKEN_ID=agent@pam!claude-agent
+   PROXMOX_TOKEN_SECRET=your-token-secret-here
+
+   # AI APIキー
+   ANTHROPIC_API_KEY=sk-ant-xxxxx
+   GEMINI_API_KEY=xxxxx
    ```
+   *ヒント*: `docker-compose.yml` で `network_mode: host` が設定されているため、ホスト側のネットワークに直接アクセス可能です。
 
-3. **Proxmox APIトークンの作成**
-   Proxmox VEの管理画面で設定します。
-   - `Datacenter` → `Permissions` → `API Tokens` → `Add` を選択
-   - User: `agent@pam` (必要に応じてユーザーを先に作成してください)
-   - Token ID: `claude-agent` (任意の名前)
-   - Privilege Separation: チェック推奨（権限分離のため）
+3. **ビルドとデプロイ**
+   Dockege UI上の「Deploy」ボタンをクリックします。
+   初回はDockerイメージのビルドが行われるため、数分かかる場合があります。
 
-4. **エージェントの起動**
-   Dockerを使って環境を構築・起動します。
+4. **AIツールの実行**
+   デプロイ完了後、Dockege UIの「Terminal」タブ（または `docker exec`）を使用してコンテナのシェルに入ります。
    ```bash
-   docker compose up -d
-   docker compose exec ai-agent bash
-   ```
-
-5. **AIツールの実行**
-   コンテナ内のシェルに入ったら、AIツールを起動します。
-   ```bash
+   # コンテナ内で実行
    claude
    ```
+   これで、AIエージェントがProxmox環境の管理や状況確認を行えるようになります。
 
 ## Setup (English)
 
