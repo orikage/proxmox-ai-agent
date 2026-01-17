@@ -53,8 +53,9 @@ Proxmox上に設置されたDockege環境で、このAIエージェントを実�
    PROXMOX_TOKEN_ID=agent@pam!claude-agent
    PROXMOX_TOKEN_SECRET=your-token-secret-here
 
-   # AI APIキー
+   # AI APIキー (どちらか一つでOK)
    ANTHROPIC_API_KEY=sk-ant-xxxxx
+   # または
    GEMINI_API_KEY=xxxxx
    ```
    *ヒント*: `docker-compose.yml` で `network_mode: host` が設定されているため、ホスト側のネットワークに直接アクセス可能です。
@@ -67,7 +68,11 @@ Proxmox上に設置されたDockege環境で、このAIエージェントを実�
    デプロイ完了後、Dockege UIの「Terminal」タブ（または `docker exec`）を使用してコンテナのシェルに入ります。
    ```bash
    # コンテナ内で実行
+   # Claudeを使用する場合
    claude
+
+   # Geminiを使用する場合
+   gemini
    ```
    これで、AIエージェントがProxmox環境の管理や状況確認を行えるようになります。
 
@@ -82,7 +87,7 @@ cd proxmox-ai-agent
 2. Configure environment
 ```bash
 cp .env.example .env
-# Edit .env with your Proxmox API token and AI API keys
+# Edit .env with your Proxmox API token and at least one AI API key (Anthropic or Gemini)
 ```
 
 3. Create Proxmox API Token
@@ -99,7 +104,11 @@ docker compose exec ai-agent bash
 
 5. Run ClaudeCode
 ```bash
+# For Claude
 claude
+
+# For Gemini
+gemini
 ```
 
 ## Available Scripts

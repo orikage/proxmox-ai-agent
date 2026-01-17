@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y \
 # ClaudeCode
 RUN npm install -g @anthropic-ai/claude-code
 
+# Gemini CLI
+RUN npm install -g @google/gemini-cli
+
 WORKDIR /workspace
 ENV HOME=/workspace
 
