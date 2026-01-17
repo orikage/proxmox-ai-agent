@@ -2,6 +2,15 @@
 
 AI agents (ClaudeCode/Gemini CLI) for Proxmox VE management via REST API.
 
+## このリポジトリでできること
+
+このリポジトリは、Claude CodeやGemini CLIなどのAIエージェントが、Proxmox VE (PVE) 環境を操作・管理するための実行環境を提供します。
+
+主な機能:
+- **Proxmox VEの操作**: 付属のスクリプトやAPIラッパーを通じて、PVE上のリソース（ノード、VM、LXCコンテナ）の情報取得や管理が可能です。
+- **AIエージェント用環境**: Dockerコンテナとして環境がパッケージ化されており、AIエージェントをすぐに起動してPVE操作を行わせることができます。
+- **拡張可能なツールセット**: 基本的なスクリプト (`pve-vms`, `pve-status` など) に加え、任意のAPIエンドポイントを叩ける `pve-api` ラッパーが含まれているため、バックアップ作成やVM作成など、複雑なタスクもAIに指示可能です。
+
 ## Setup
 
 1. Clone this repository
