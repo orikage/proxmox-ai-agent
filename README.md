@@ -11,6 +11,13 @@ AI agents (ClaudeCode/Gemini CLI) for Proxmox VE management via REST API.
 - **AIエージェント用環境**: Dockerコンテナとして環境がパッケージ化されており、AIエージェントをすぐに起動してPVE操作を行わせることができます。
 - **拡張可能なツールセット**: 基本的なスクリプト (`pve-vms`, `pve-status` など) に加え、任意のAPIエンドポイントを叩ける `pve-api` ラッパーが含まれているため、バックアップ作成やVM作成など、複雑なタスクもAIに指示可能です。
 
+
+## Web Terminal Access
+
+This agent exposes a web-based terminal on port 7681 using `ttyd`.
+You can access the terminal by visiting `http://<your-host-ip>:7681` in your browser.
+This allows you to use the AI agent (Claude/Gemini) from any device, including mobile phones.
+
 ## Dockege (Proxmox上) へのインストール
 
 Proxmox上に設置されたDockege環境で、このAIエージェントを実行および管理する手順です。
@@ -65,7 +72,12 @@ Proxmox上に設置されたDockege環境で、このAIエージェントを実�
    初回はDockerイメージのビルドが行われるため、数分かかる場合があります。
 
 4. **AIツールの実行**
-   デプロイ完了後、Dockege UIの「Terminal」タブ（または `docker exec`）を使用してコンテナのシェルに入ります。
+   
+   **Webターミナル (推奨):**
+   ブラウザで `http://<ProxmoxのIP>:7681` にアクセスすると、ターミナルが表示されます。
+   
+   **従来の方法:**
+   Dockege UIの「Terminal」タブ（または `docker exec`）を使用してコンテナのシェルに入ります。
    ```bash
    # コンテナ内で実行
    # Claudeを使用する場合
@@ -118,6 +130,10 @@ gemini
 - `pve-vms` - List VMs
 - `pve-lxc` - List LXC containers
 - `pve-status` - Node status
+
+## Web Terminal
+
+Access the terminal via browser at `http://<host-ip>:7681`.
 
 ## Security Notes
 
